@@ -7,4 +7,6 @@ Before committing any change, run the following:
 3. Confirm success metrics updates if outputs change.
 
 Notes:
-- If Playwright tests fail locally, record the reason and retry after `npx playwright install`.
+
+- If Playwright tests fail locally, record the reason.
+- Retry after running `npx playwright install`.
