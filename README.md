@@ -13,7 +13,13 @@ source .venv/bin/activate
 python backend/generate_data.py
 python backend/label_quality.py
 python backend/detect_leaks.py
+python backend/report.py --ui-out ui/src/data/report.json
 ```
+
+Report artifacts:
+
+- `telemetry_lab/data/report.json` (incident report output)
+- `telemetry_lab/ui/src/data/report.json` (UI export payload)
 
 Optional UI:
 

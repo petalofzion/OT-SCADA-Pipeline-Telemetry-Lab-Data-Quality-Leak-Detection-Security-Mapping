@@ -14,6 +14,7 @@ import telemetryCsv from './data/telemetry.csv?raw';
 import labelsData from './data/labels.json';
 import alertsData from './data/alerts.json';
 import assetsData from './data/assets.json';
+import reportData from './data/report.json';
 
 const parseTelemetry = (csvText) => {
   const [headerLine, ...rows] = csvText.trim().split('\n');
@@ -105,6 +106,18 @@ export default function App() {
         .filter(Boolean),
     [telemetry]
   );
+
+  const handleReportExport = () => {
+    const blob = new window.Blob([JSON.stringify(reportData, null, 2)], {
+      type: 'application/json'
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'report.json';
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="app">
@@ -267,7 +280,9 @@ export default function App() {
               ))}
             </tbody>
           </table>
-          <button type="button">Export incident report (JSON)</button>
+          <button type="button" onClick={handleReportExport}>
+            Export incident report (JSON)
+          </button>
         </div>
         <div>
           <h2>Data Quality Labels</h2>
