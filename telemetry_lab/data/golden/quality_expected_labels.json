@@ -19,8 +19,8 @@
   },
   {
     "kind": "drift",
-    "start_index": 22,
-    "end_index": 33,
+    "start_index": 17,
+    "end_index": 28,
     "reason": "Temperature drift detected"
   }
 ]

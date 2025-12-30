@@ -17,7 +17,7 @@ class LeakAlert:
     reason: str
 
 
-def ewma(values: list[float], alpha: float = 0.3) -> list[float]:
+def ewma(values: list[float], alpha: float = 0.05) -> list[float]:
     smoothed: list[float] = []
     prev = values[0]
     for value in values:
