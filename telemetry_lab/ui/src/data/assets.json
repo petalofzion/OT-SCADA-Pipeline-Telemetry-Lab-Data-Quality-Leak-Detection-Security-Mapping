@@ -1,0 +1,8 @@
+[
+  { "name": "Flow Sensor", "role": "Field device", "access": "operator" },
+  { "name": "RTU", "role": "Edge control", "access": "engineer" },
+  { "name": "Historian", "role": "Storage", "access": "engineer" },
+  { "name": "HMI", "role": "Ops dashboard", "access": "operator" },
+  { "name": "Analytics Node", "role": "Leak detection", "access": "admin" },
+  { "name": "SCADA Gateway", "role": "Remote access", "access": "admin" }
+]
