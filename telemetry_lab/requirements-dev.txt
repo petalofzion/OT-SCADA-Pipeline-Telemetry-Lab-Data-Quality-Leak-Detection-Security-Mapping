@@ -1,0 +1,9 @@
+pytest==8.3.4
+pytest-cov==5.0.0
+hypothesis==6.108.3
+jsonschema==4.23.0
+ruff==0.8.2
+black==24.10.0
+mypy==1.13.0
+bandit==1.7.10
+pip-audit==2.7.3
