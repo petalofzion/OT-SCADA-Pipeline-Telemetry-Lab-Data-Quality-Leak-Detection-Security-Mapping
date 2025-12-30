@@ -1,12 +1,13 @@
 """Leak detection baseline using EWMA + persistence window."""
+
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable
 
 
 @dataclass
@@ -35,7 +36,7 @@ def detect_leaks(flow_values: list[float], persistence: int = 6) -> list[LeakAle
     alerts: list[LeakAlert] = []
 
     below: list[int] = []
-    for idx, (value, base) in enumerate(zip(flow_values, baseline)):
+    for idx, (value, base) in enumerate(zip(flow_values, baseline, strict=True)):
         if value < base - 2.5:
             below.append(idx)
         else:

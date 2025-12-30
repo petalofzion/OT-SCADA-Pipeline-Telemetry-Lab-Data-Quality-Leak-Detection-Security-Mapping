@@ -3,15 +3,16 @@
 This module focuses on clarity and explainability. It is intentionally small
 and has inline TODOs where future enhancements should go.
 """
+
 from __future__ import annotations
 
 import csv
 import json
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 from random import Random
-from typing import Iterable, List
+from typing import Iterable
 
 
 @dataclass
@@ -45,7 +46,7 @@ def generate_points(
     seed: int = 42,
 ) -> list[TelemetryPoint]:
     """Generate a baseline time-series with no quality issues."""
-    rng = Random(seed)
+    rng = Random(seed)  # nosec B311 - deterministic synthetic data for testing
     points: list[TelemetryPoint] = []
     for step in range(minutes):
         base_flow, base_pressure, base_temp = _base_profile(step)
@@ -139,7 +140,7 @@ def write_csv(path: Path, points: Iterable[TelemetryPoint]) -> None:
             writer.writerow(asdict(point))
 
 
-def write_json(path: Path, events: List[InjectionEvent]) -> None:
+def write_json(path: Path, events: list[InjectionEvent]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = [asdict(event) for event in events]
     path.write_text(json.dumps(payload, indent=2))

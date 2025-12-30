@@ -39,4 +39,3 @@ def test_server_health_and_alerts(tmp_path: Path) -> None:
     finally:
         httpd.shutdown()
         thread.join(timeout=1)
-

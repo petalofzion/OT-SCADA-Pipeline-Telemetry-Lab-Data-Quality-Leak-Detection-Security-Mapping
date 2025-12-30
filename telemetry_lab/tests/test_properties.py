@@ -1,7 +1,7 @@
 import math
-from typing import List
 
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 
 from telemetry_lab.backend.detect_leaks import detect_leaks
 from telemetry_lab.backend.label_quality import clean_rows, label_quality
@@ -14,7 +14,7 @@ from telemetry_lab.backend.label_quality import clean_rows, label_quality
         max_size=50,
     )
 )
-def test_no_nans_after_cleaning(flow_values: List[float]) -> None:
+def test_no_nans_after_cleaning(flow_values: list[float]) -> None:
     rows = [
         {
             "timestamp": "2024-01-01T00:00:00",
@@ -36,7 +36,7 @@ def test_no_nans_after_cleaning(flow_values: List[float]) -> None:
         max_size=80,
     )
 )
-def test_missing_and_flatline_do_not_overlap(flow_values: List[float]) -> None:
+def test_missing_and_flatline_do_not_overlap(flow_values: list[float]) -> None:
     rows = [
         {
             "timestamp": "2024-01-01T00:00:00",
@@ -62,7 +62,7 @@ def test_missing_and_flatline_do_not_overlap(flow_values: List[float]) -> None:
         max_size=80,
     )
 )
-def test_detector_alert_indices_within_bounds(flow_values: List[float]) -> None:
+def test_detector_alert_indices_within_bounds(flow_values: list[float]) -> None:
     alerts = detect_leaks(flow_values, persistence=3)
     for alert in alerts:
         assert 0 <= alert.start_index <= alert.end_index < len(flow_values)

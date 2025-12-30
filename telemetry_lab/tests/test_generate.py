@@ -14,7 +14,5 @@ def test_generate_reproducible_seed(tmp_path: Path) -> None:
     points = generate_points(start_time=datetime(2024, 1, 1), minutes=12, seed=123)
     write_csv(output_path, points)
 
-    golden_path = (
-        Path(__file__).resolve().parents[1] / "data" / "golden" / "seed_123.csv"
-    )
+    golden_path = Path(__file__).resolve().parents[1] / "data" / "golden" / "seed_123.csv"
     assert _sha256(output_path) == _sha256(golden_path)

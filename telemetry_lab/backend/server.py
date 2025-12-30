@@ -3,12 +3,12 @@
 This uses the standard library to stay dependency-light. Replace with FastAPI
 or Flask if you want richer endpoints.
 """
+
 from __future__ import annotations
 
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
-
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 
@@ -36,7 +36,7 @@ class TelemetryHandler(BaseHTTPRequestHandler):
 
 
 def main() -> None:
-    server = HTTPServer(("0.0.0.0", 8000), TelemetryHandler)
+    server = HTTPServer(("127.0.0.1", 8000), TelemetryHandler)
     print("Serving telemetry API on http://localhost:8000")
     server.serve_forever()
 

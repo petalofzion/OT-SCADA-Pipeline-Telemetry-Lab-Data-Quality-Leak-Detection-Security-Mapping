@@ -2,14 +2,15 @@
 
 This script scans the CSV and outputs labeled segments + a cleaned CSV.
 """
+
 from __future__ import annotations
 
 import csv
 import json
 import math
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable
 
 
 @dataclass
@@ -80,7 +81,11 @@ def label_quality(rows: list[dict[str, str]]) -> list[QualityLabel]:
 
     # Spike detection (single point)
     for idx in range(1, len(rows) - 1):
-        if _row_has_missing(rows[idx - 1]) or _row_has_missing(rows[idx]) or _row_has_missing(rows[idx + 1]):
+        if (
+            _row_has_missing(rows[idx - 1])
+            or _row_has_missing(rows[idx])
+            or _row_has_missing(rows[idx + 1])
+        ):
             continue
         prev_val = float(rows[idx - 1]["pressure"])
         next_val = float(rows[idx + 1]["pressure"])
@@ -136,7 +141,7 @@ def write_csv(path: Path, rows: Iterable[dict[str, str]]) -> None:
             writer.writerow(row)
 
 
-def write_json(path: Path, labels: List[QualityLabel]) -> None:
+def write_json(path: Path, labels: list[QualityLabel]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = [asdict(label) for label in labels]
     path.write_text(json.dumps(payload, indent=2))
