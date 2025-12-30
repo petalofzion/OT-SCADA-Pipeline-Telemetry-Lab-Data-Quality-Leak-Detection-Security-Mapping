@@ -37,11 +37,25 @@ def label_quality(rows: list[dict[str, str]]) -> list[QualityLabel]:
     # Missing data detection (any signal)
     missing_indices = [i for i, row in enumerate(rows) if _row_has_missing(row)]
     if missing_indices:
+        start_index = missing_indices[0]
+        previous_index = start_index
+        for index in missing_indices[1:]:
+            if index != previous_index + 1:
+                labels.append(
+                    QualityLabel(
+                        kind="missing",
+                        start_index=start_index,
+                        end_index=previous_index,
+                        reason="Missing telemetry value(s)",
+                    )
+                )
+                start_index = index
+            previous_index = index
         labels.append(
             QualityLabel(
                 kind="missing",
-                start_index=missing_indices[0],
-                end_index=missing_indices[-1],
+                start_index=start_index,
+                end_index=previous_index,
                 reason="Missing telemetry value(s)",
             )
         )
