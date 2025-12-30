@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r telemetry_lab/requirements-dev.txt
+
+      - name: Python lint & security checks
+        run: |
+          python -m ruff check telemetry_lab
+          python -m black --check telemetry_lab scripts
+          python -m mypy telemetry_lab/backend telemetry_lab/tests
+          python -m bandit -r telemetry_lab/backend
+          python -m pip_audit -r telemetry_lab/requirements-dev.txt
+
+      - name: Python tests
+        run: |
+          python -m pytest
+
+      - name: Large file check
+        run: |
+          python scripts/check_large_files.py
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install root tooling
+        run: npm ci
+
+      - name: Markdown lint
+        run: |
+          npx markdownlint-cli2 README.md telemetry_lab/docs/*.md CHECKLIST.md CI_FAIL_PLAYBOOK.md
+
+      - name: Install UI dependencies
+        run: |
+          cd telemetry_lab/ui
+          npm ci
+
+      - name: UI lint
+        run: |
+          cd telemetry_lab/ui
+          npm run lint
+
+      - name: UI build
+        run: |
+          cd telemetry_lab/ui
+          npm run build
+
+      - name: Install Playwright browsers
+        run: |
+          cd telemetry_lab/ui
+          npx playwright install --with-deps chromium
+
+      - name: UI smoke tests
+        run: |
+          cd telemetry_lab/ui
+          npx playwright test

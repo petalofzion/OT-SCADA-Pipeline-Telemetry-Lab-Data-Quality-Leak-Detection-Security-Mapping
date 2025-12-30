@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IncidentReport",
+  "type": "object",
+  "required": ["generated_at", "alerts", "labels", "summary"],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "alerts": {"$ref": "alerts.schema.json"},
+    "labels": {"$ref": "labels.schema.json"},
+    "summary": {
+      "type": "object",
+      "required": ["alert_count", "label_count"],
+      "properties": {
+        "alert_count": {"type": "integer", "minimum": 0},
+        "label_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "kind": "missing",
+    "start_index": 5,
+    "end_index": 6,
+    "reason": "Missing telemetry value(s)"
+  },
+  {
+    "kind": "flatline",
+    "start_index": 10,
+    "end_index": 17,
+    "reason": "Flow sensor flatline"
+  },
+  {
+    "kind": "spike",
+    "start_index": 19,
+    "end_index": 19,
+    "reason": "Pressure spike outlier"
+  },
+  {
+    "kind": "drift",
+    "start_index": 17,
+    "end_index": 28,
+    "reason": "Temperature drift detected"
+  }
+]

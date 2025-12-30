@@ -1,0 +1,15 @@
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+strict = false
+
+[tool.pytest.ini_options]
+addopts = "-q --cov=telemetry_lab/backend --cov-report=term-missing --cov-fail-under=70"
+testpaths = ["telemetry_lab/tests"]

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QualityLabels",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["kind", "start_index", "end_index", "reason"],
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": ["missing", "flatline", "spike", "drift"]
+      },
+      "start_index": {"type": "integer", "minimum": 0},
+      "end_index": {"type": "integer", "minimum": 0},
+      "reason": {"type": "string"}
+    },
+    "additionalProperties": false
+  }
+}

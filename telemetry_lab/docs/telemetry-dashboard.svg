@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#f5f7fb" />
+  <rect x="60" y="40" width="1080" height="595" rx="18" fill="#ffffff" />
+  <text x="100" y="90" font-family="Inter, Arial, sans-serif" font-size="28" fill="#1c2333">
+    OT/SCADA Pipeline Telemetry Lab (Dashboard Mock)
+  </text>
+  <rect x="100" y="130" width="1000" height="180" rx="12" fill="#f9fbff" stroke="#c9d4f0" stroke-dasharray="6 4" />
+  <text x="120" y="170" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5f6b85">
+    Time-Series Chart Placeholder
+  </text>
+  <rect x="100" y="340" width="480" height="230" rx="12" fill="#ffffff" stroke="#e4e8f7" />
+  <text x="120" y="375" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1c2333">Leak Alerts</text>
+  <rect x="620" y="340" width="480" height="230" rx="12" fill="#ffffff" stroke="#e4e8f7" />
+  <text x="640" y="375" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1c2333">Data Quality Labels</text>
+  <rect x="100" y="590" width="1000" height="40" rx="10" fill="#eef2ff" />
+  <text x="120" y="615" font-family="Inter, Arial, sans-serif" font-size="14" fill="#2b5cff">
+    Asset &amp; Comms Map Placeholder
+  </text>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LeakAlerts",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["start_index", "end_index", "confidence", "reason"],
+    "properties": {
+      "start_index": {"type": "integer", "minimum": 0},
+      "end_index": {"type": "integer", "minimum": 0},
+      "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+      "reason": {"type": "string"}
+    },
+    "additionalProperties": false
+  }
+}

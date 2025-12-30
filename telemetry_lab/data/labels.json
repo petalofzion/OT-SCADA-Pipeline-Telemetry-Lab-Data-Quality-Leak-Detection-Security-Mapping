@@ -1,0 +1,8 @@
+[
+  {
+    "kind": "missing",
+    "start_index": 60,
+    "end_index": 69,
+    "reason": "Missing telemetry value(s)"
+  }
+]
