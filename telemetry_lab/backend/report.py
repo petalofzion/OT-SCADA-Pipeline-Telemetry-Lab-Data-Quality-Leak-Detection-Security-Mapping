@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,6 +39,54 @@ def write_report(path: Path, report: dict[str, Any]) -> None:
     path.write_text(json.dumps(report, indent=2))
 
 
+def build_report_csv_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
+    generated_at = report.get("generated_at", "")
+    rows = []
+    for alert in report.get("alerts", []):
+        rows.append(
+            {
+                "record_type": "alert",
+                "generated_at": generated_at,
+                "kind": "",
+                "start_index": alert.get("start_index"),
+                "end_index": alert.get("end_index"),
+                "confidence": alert.get("confidence"),
+                "reason": alert.get("reason", ""),
+            }
+        )
+    for label in report.get("labels", []):
+        rows.append(
+            {
+                "record_type": "label",
+                "generated_at": generated_at,
+                "kind": label.get("kind", ""),
+                "start_index": label.get("start_index"),
+                "end_index": label.get("end_index"),
+                "confidence": "",
+                "reason": label.get("reason", ""),
+            }
+        )
+    return rows
+
+
+def write_report_csv(path: Path, report: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    rows = build_report_csv_rows(report)
+    fieldnames = [
+        "record_type",
+        "generated_at",
+        "kind",
+        "start_index",
+        "end_index",
+        "confidence",
+        "reason",
+    ]
+    with path.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def parse_args() -> argparse.Namespace:
     data_dir = Path(__file__).resolve().parents[1] / "data"
     parser = argparse.ArgumentParser(description="Build a report from alerts and labels.")
@@ -65,6 +114,18 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Optional path to mirror the report into the UI data folder.",
     )
+    parser.add_argument(
+        "--csv-out",
+        dest="csv_output_path",
+        default=None,
+        help="Optional path for the report CSV output.",
+    )
+    parser.add_argument(
+        "--ui-csv-out",
+        dest="ui_csv_output_path",
+        default=None,
+        help="Optional path to mirror the report CSV into the UI data folder.",
+    )
     return parser.parse_args()
 
 
@@ -76,6 +137,10 @@ def main() -> None:
     write_report(Path(args.output_path), report)
     if args.ui_output_path:
         write_report(Path(args.ui_output_path), report)
+    if args.csv_output_path:
+        write_report_csv(Path(args.csv_output_path), report)
+    if args.ui_csv_output_path:
+        write_report_csv(Path(args.ui_csv_output_path), report)
 
 
 if __name__ == "__main__":

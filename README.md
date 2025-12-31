@@ -22,7 +22,9 @@ For a full demo runbook (data generation → API → UI → report export), see
 Report artifacts:
 
 - `telemetry_lab/data/report.json` (incident report output)
+- `telemetry_lab/data/report.csv` (incident report CSV export)
 - `telemetry_lab/ui/src/data/report.json` (UI export payload)
+- `telemetry_lab/ui/src/data/report.csv` (UI CSV export payload)
 
 Optional UI:
 
