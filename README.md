@@ -96,7 +96,14 @@ telemetry_lab/
 
 ## Screenshots
 
-![Operator dashboard scaffold (mock)](telemetry_lab/docs/telemetry-dashboard.svg)
+![Operator dashboard](telemetry_lab/docs/telemetry-dashboard.png)
+
+## Evidence & Artifacts
+
+- **Dashboard**: `telemetry_lab/docs/telemetry-dashboard.png` (captured from live app)
+- **Incident Report**: `telemetry_lab/data/report.json`
+- **Cleaned Data**: `telemetry_lab/data/cleaned.csv`
+- **Leak Alerts**: `telemetry_lab/data/alerts.json`
 
 ## Golden datasets
 

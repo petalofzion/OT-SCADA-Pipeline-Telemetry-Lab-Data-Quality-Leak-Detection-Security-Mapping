@@ -15,6 +15,7 @@ export default defineConfig({
           cleaned: 'cleaned.csv',
           labels: 'labels.json',
           alerts: 'alerts.json',
+          report: 'report.json',
           assets: 'asset_comms.json'
         };
 
