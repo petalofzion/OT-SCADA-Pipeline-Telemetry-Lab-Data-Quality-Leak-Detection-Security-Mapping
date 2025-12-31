@@ -100,8 +100,8 @@ telemetry_lab/
 
 ## Evidence & Artifacts
 
-- **Dashboard**: `telemetry_lab/docs/telemetry-dashboard.png` (captured from live app)
-- **Incident Report**: `telemetry_lab/data/report.json`
+- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png` (captured from live app)
+- **Incident Report**: `telemetry_lab/data/report.json` (JSON export)
 - **Cleaned Data**: `telemetry_lab/data/cleaned.csv`
 - **Leak Alerts**: `telemetry_lab/data/alerts.json`
 
@@ -139,14 +139,13 @@ make check
 ## Limitations
 
 - Detection logic is intentionally simple and threshold-based.
-- UI is a scaffold with placeholder charting and export logic.
-- Asset/comms map is a stub; add a real graph for a stronger demo.
+- Recharts dashboards and the vis-network comms map are implemented, but CSV export is not wired up yet (JSON export works).
 
 ## Next steps
 
-- Replace placeholders with actual charting and CSV/JSON export.
+- Add CSV export to complement the existing JSON export.
 - Add advanced detection (CUSUM, ROC/STA, isolation forest).
-- Build a comms graph with attack path analysis.
+- Extend the comms graph with attack path analysis.
 
 ## License
 
