@@ -75,12 +75,12 @@ export default function App() {
           assetsResponse,
           reportResponse
         ] = await Promise.all([
-          fetch('/data/sample'),
-          fetch('/data/cleaned'),
-          fetch('/data/labels'),
-          fetch('/data/alerts'),
-          fetch('/data/assets'),
-          fetch('/data/report')
+          window.fetch('/data/sample'),
+          window.fetch('/data/cleaned'),
+          window.fetch('/data/labels'),
+          window.fetch('/data/alerts'),
+          window.fetch('/data/assets'),
+          window.fetch('/data/report')
         ]);
 
         const sampleCsv = sampleResponse.ok ? await sampleResponse.text() : '';
@@ -101,7 +101,7 @@ export default function App() {
         }
         setReportData(reportPayload);
       } catch (error) {
-        console.error('Failed to load telemetry data', error);
+        window.console.error('Failed to load telemetry data', error);
       }
     };
 
@@ -234,7 +234,7 @@ export default function App() {
           };
         })
         .filter(Boolean),
-    [telemetry]
+    [labelsData, telemetry]
   );
 
   const alertRanges = useMemo(
@@ -259,7 +259,7 @@ export default function App() {
           };
         })
         .filter(Boolean),
-    [telemetry]
+    [alertsData, telemetry]
   );
 
   const handleReportExport = () => {
