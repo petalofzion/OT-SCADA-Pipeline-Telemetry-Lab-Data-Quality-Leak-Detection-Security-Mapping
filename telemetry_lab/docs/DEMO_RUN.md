@@ -62,19 +62,23 @@ The Vite dev server output will include a local URL such as:
 
 ## 4) Export the incident report
 
-Generate the incident report JSON and mirror it into the UI data folder:
+Generate the incident report JSON/CSV and mirror it into the UI data folder:
 
 ```bash
 cd telemetry_lab
 source .venv/bin/activate
 python backend/report.py \
   --out data/report.json \
-  --ui-out ui/src/data/report.json
+  --ui-out ui/src/data/report.json \
+  --csv-out data/report.csv \
+  --ui-csv-out ui/src/data/report.csv
 ```
 
 **Expected output files**
 
 - `telemetry_lab/data/report.json` (incident report)
+- `telemetry_lab/data/report.csv` (incident report CSV export)
 - `telemetry_lab/ui/src/data/report.json` (UI export payload)
+- `telemetry_lab/ui/src/data/report.csv` (UI CSV export payload)
 
 If you are running the API server, `/data/report` will return the same payload.

@@ -299,7 +299,7 @@ export default function App() {
     [alertsData, telemetry]
   );
 
-  const handleReportExport = () => {
+const handleReportExport = () => {
     if (!reportData) {
       return;
     }
@@ -310,6 +310,68 @@ export default function App() {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'report.json';
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const buildReportCsvRows = (report) => {
+    const generatedAt = report?.generated_at ?? '';
+    const rows = [];
+    (report?.alerts ?? []).forEach((alert) => {
+      rows.push({
+        record_type: 'alert',
+        generated_at: generatedAt,
+        kind: '',
+        start_index: alert.start_index ?? '',
+        end_index: alert.end_index ?? '',
+        confidence: alert.confidence ?? '',
+        reason: alert.reason ?? ''
+      });
+    });
+    (report?.labels ?? []).forEach((label) => {
+      rows.push({
+        record_type: 'label',
+        generated_at: generatedAt,
+        kind: label.kind ?? '',
+        start_index: label.start_index ?? '',
+        end_index: label.end_index ?? '',
+        confidence: '',
+        reason: label.reason ?? ''
+      });
+    });
+    return rows;
+  };
+
+  const stringifyCsv = (rows) => {
+    if (!rows.length) {
+      return 'record_type,generated_at,kind,start_index,end_index,confidence,reason';
+    }
+    const headers = Object.keys(rows[0]);
+    const escapeValue = (value) => {
+      const text = value === null || value === undefined ? '' : String(value);
+      if (/[",\n]/.test(text)) {
+        return `"${text.replace(/"/g, '""')}"`;
+      }
+      return text;
+    };
+    const lines = [
+      headers.join(','),
+      ...rows.map((row) => headers.map((header) => escapeValue(row[header])).join(','))
+    ];
+    return lines.join('\n');
+  };
+
+  const handleReportCsvExport = () => {
+    if (!reportData) {
+      return;
+    }
+    const rows = buildReportCsvRows(reportData);
+    const csvText = stringifyCsv(rows);
+    const blob = new window.Blob([csvText], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'report.csv';
     link.click();
     window.URL.revokeObjectURL(url);
   };
@@ -477,6 +539,9 @@ export default function App() {
           </table>
           <button type="button" onClick={handleReportExport} disabled={!reportData}>
             Export incident report (JSON)
+          </button>
+          <button type="button" onClick={handleReportCsvExport} disabled={!reportData}>
+            Export incident report (CSV)
           </button>
         </div>
         <div>
