@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CartesianGrid,
   Legend,
@@ -10,10 +10,11 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import { DataSet, Network } from 'vis-network/standalone/esm/vis-network';
 import telemetryCsv from './data/telemetry.csv?raw';
 import labelsData from './data/labels.json';
 import alertsData from './data/alerts.json';
-import assetsData from './data/assets.json';
+import commsModel from '../../data/asset_comms.json';
 import reportData from './data/report.json';
 
 const parseTelemetry = (csvText) => {
@@ -61,11 +62,120 @@ export default function App() {
   const [showCleaned, setShowCleaned] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
   const [showAlerts, setShowAlerts] = useState(true);
+  const graphRef = useRef(null);
 
   const telemetry = useMemo(
     () => addCleanedTelemetry(parseTelemetry(telemetryCsv)),
     []
   );
+
+  const trustBoundaryMap = useMemo(
+    () =>
+      new Map(
+        commsModel.trustBoundaries.map((boundary) => [boundary.id, boundary])
+      ),
+    []
+  );
+
+  const accessLevelColors = useMemo(
+    () => ({
+      operator: '#16a34a',
+      engineer: '#f59e0b',
+      admin: '#ec4899'
+    }),
+    []
+  );
+
+  const edgeAccessColors = useMemo(
+    () => ({
+      telemetry: '#0ea5e9',
+      control: '#f97316',
+      admin: '#ef4444'
+    }),
+    []
+  );
+
+  const graphData = useMemo(() => {
+    const nodes = commsModel.assets.map((asset) => {
+      const boundary = trustBoundaryMap.get(asset.trustBoundary);
+      return {
+        id: asset.id,
+        label: `${asset.name}\n${asset.role}`,
+        color: {
+          background: accessLevelColors[asset.accessLevel] || '#94a3b8',
+          border: boundary?.color || '#334155'
+        },
+        title: `${asset.name} (${asset.role})\nAccess: ${asset.accessLevel}\nBoundary: ${boundary?.label ?? 'Unknown'}`
+      };
+    });
+
+    const edges = commsModel.communications.map((link) => ({
+      id: link.id,
+      from: link.source,
+      to: link.target,
+      label: `${link.protocol}\n${link.accessLevel}`,
+      dashes: link.crossesBoundary,
+      color: {
+        color: edgeAccessColors[link.accessLevel] || '#64748b'
+      },
+      font: {
+        color: '#1f2937',
+        size: 11,
+        align: 'middle'
+      },
+      title: link.note
+    }));
+
+    return { nodes, edges };
+  }, [accessLevelColors, edgeAccessColors, trustBoundaryMap]);
+
+  useEffect(() => {
+    if (!graphRef.current) {
+      return undefined;
+    }
+
+    const nodes = new DataSet(graphData.nodes);
+    const edges = new DataSet(graphData.edges);
+    const network = new Network(
+      graphRef.current,
+      { nodes, edges },
+      {
+        autoResize: true,
+        layout: {
+          improvedLayout: true
+        },
+        nodes: {
+          shape: 'box',
+          margin: 12,
+          widthConstraint: { maximum: 180 },
+          font: {
+            color: '#0f172a',
+            size: 12
+          }
+        },
+        edges: {
+          arrows: {
+            to: { enabled: true, scaleFactor: 0.6 }
+          },
+          smooth: {
+            type: 'dynamic'
+          }
+        },
+        physics: {
+          stabilization: true,
+          barnesHut: {
+            springLength: 150,
+            springConstant: 0.04
+          }
+        },
+        interaction: {
+          hover: true
+        }
+      }
+    );
+
+    return () => network.destroy();
+  }, [graphData]);
 
   const labelRanges = useMemo(
     () =>
@@ -299,18 +409,72 @@ export default function App() {
 
       <section className="panel">
         <h2>Asset &amp; Comms Map</h2>
-        <div className="asset-grid">
-          {assetsData.map((asset) => (
-            <div key={asset.name} className="asset-card">
-              <h3>{asset.name}</h3>
-              <p>{asset.role}</p>
-              <span className={`tag ${asset.access}`}>{asset.access}</span>
+        <div className="graph-shell" ref={graphRef} data-testid="asset-graph" />
+        <div className="graph-legend">
+          <div>
+            <h3>Access levels</h3>
+            <div className="legend-row">
+              <span
+                className="legend-swatch"
+                style={{ backgroundColor: accessLevelColors.operator }}
+              />
+              Operator
             </div>
-          ))}
+            <div className="legend-row">
+              <span
+                className="legend-swatch"
+                style={{ backgroundColor: accessLevelColors.engineer }}
+              />
+              Engineer
+            </div>
+            <div className="legend-row">
+              <span
+                className="legend-swatch"
+                style={{ backgroundColor: accessLevelColors.admin }}
+              />
+              Admin
+            </div>
+          </div>
+          <div>
+            <h3>Trust boundaries</h3>
+            {commsModel.trustBoundaries.map((boundary) => (
+              <div className="legend-row" key={boundary.id}>
+                <span
+                  className="legend-swatch legend-border"
+                  style={{ borderColor: boundary.color }}
+                />
+                {boundary.label}
+              </div>
+            ))}
+          </div>
+          <div>
+            <h3>Comms</h3>
+            <div className="legend-row">
+              <span
+                className="legend-line"
+                style={{ backgroundColor: edgeAccessColors.telemetry }}
+              />
+              Telemetry
+            </div>
+            <div className="legend-row">
+              <span
+                className="legend-line"
+                style={{ backgroundColor: edgeAccessColors.control }}
+              />
+              Control
+            </div>
+            <div className="legend-row">
+              <span
+                className="legend-line legend-dashed"
+                style={{ borderColor: edgeAccessColors.admin }}
+              />
+              Admin (dashed = boundary crossing)
+            </div>
+          </div>
         </div>
         <p className="caption">
-          TODO: Replace with a directed graph showing communications and trust
-          boundaries.
+          Each node is colored by access level and bordered by OT trust boundary.
+          Dashed edges indicate communications that traverse zones.
         </p>
       </section>
     </div>
