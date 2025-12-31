@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ALRT-001",
+    "severity": "medium",
+    "start_index": 22,
+    "end_index": 26,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "id": "ALRT-002",
+    "severity": "high",
+    "start_index": 28,
+    "end_index": 33,
+    "reason": "Rapid pressure decay with temperature rise"
+  }
+]
