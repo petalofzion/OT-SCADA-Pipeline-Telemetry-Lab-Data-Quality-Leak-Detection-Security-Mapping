@@ -1,23 +1,26 @@
 [
   {
-    "id": "LBL-01",
     "kind": "missing",
-    "start_index": 5,
-    "end_index": 6,
+    "start_index": 60,
+    "end_index": 69,
     "reason": "Missing telemetry value(s)"
   },
   {
-    "id": "LBL-02",
     "kind": "flatline",
-    "start_index": 10,
-    "end_index": 16,
-    "reason": "Flatline detected in flow signal"
+    "start_index": 120,
+    "end_index": 127,
+    "reason": "Flow sensor flatline"
   },
   {
-    "id": "LBL-03",
     "kind": "spike",
-    "start_index": 18,
-    "end_index": 20,
-    "reason": "Short spike during valve adjustment"
+    "start_index": 180,
+    "end_index": 180,
+    "reason": "Pressure spike outlier"
+  },
+  {
+    "kind": "drift",
+    "start_index": 216,
+    "end_index": 227,
+    "reason": "Temperature drift detected"
   }
 ]

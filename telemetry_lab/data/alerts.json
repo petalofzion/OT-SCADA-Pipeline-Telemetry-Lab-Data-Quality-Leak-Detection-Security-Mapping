@@ -1,16 +1,86 @@
 [
   {
-    "id": "ALRT-001",
-    "severity": "medium",
-    "start_index": 22,
-    "end_index": 26,
+    "start_index": 24,
+    "end_index": 30,
+    "confidence": 0.8500000000000001,
     "reason": "Sustained flow drop vs EWMA baseline"
   },
   {
-    "id": "ALRT-002",
-    "severity": "high",
-    "start_index": 28,
-    "end_index": 33,
-    "reason": "Rapid pressure decay with temperature rise"
+    "start_index": 48,
+    "end_index": 56,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 62,
+    "end_index": 69,
+    "confidence": 0.9,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 86,
+    "end_index": 94,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 110,
+    "end_index": 124,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 134,
+    "end_index": 141,
+    "confidence": 0.9,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 158,
+    "end_index": 166,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 182,
+    "end_index": 191,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 206,
+    "end_index": 215,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 230,
+    "end_index": 239,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 254,
+    "end_index": 264,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 278,
+    "end_index": 287,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 302,
+    "end_index": 310,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
+  },
+  {
+    "start_index": 326,
+    "end_index": 335,
+    "confidence": 0.95,
+    "reason": "Sustained flow drop vs EWMA baseline"
   }
 ]

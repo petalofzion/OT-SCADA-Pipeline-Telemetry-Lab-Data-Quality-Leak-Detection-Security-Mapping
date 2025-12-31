@@ -18,9 +18,37 @@ test('dashboard smoke test', async ({ page }) => {
   await expect(page.locator('.recharts-line-curve')).toHaveCount(0);
   await page.getByLabel('Show raw data').check();
 
-  await expect(page.locator('.recharts-reference-area-rect')).toHaveCount(5);
+  const labelsResponse = await page.request.get('/data/labels');
+  const alertsResponse = await page.request.get('/data/alerts');
+  const sampleResponse = await page.request.get('/data/sample');
+  const labels = await labelsResponse.json();
+  const alerts = await alertsResponse.json();
+  const sampleCsv = await sampleResponse.text();
+  const telemetryCount = Math.max(
+    0,
+    sampleCsv.trim().split('\n').length - 1
+  );
+  const validLabels = labels.filter(
+    (label) =>
+      label.start_index < telemetryCount &&
+      label.end_index < telemetryCount &&
+      label.start_index !== label.end_index
+  );
+  const validAlerts = alerts.filter(
+    (alert) =>
+      alert.start_index < telemetryCount &&
+      alert.end_index < telemetryCount &&
+      alert.start_index !== alert.end_index
+  );
+  const totalOverlays = validLabels.length + validAlerts.length;
+
+  await expect(page.locator('.recharts-reference-area-rect')).toHaveCount(
+    totalOverlays
+  );
   await page.getByLabel('Show data quality labels').uncheck();
-  await expect(page.locator('.recharts-reference-area-rect')).toHaveCount(2);
+  await expect(page.locator('.recharts-reference-area-rect')).toHaveCount(
+    validAlerts.length
+  );
   await page.getByLabel('Show leak alarms').uncheck();
   await expect(page.locator('.recharts-reference-area-rect')).toHaveCount(0);
 });

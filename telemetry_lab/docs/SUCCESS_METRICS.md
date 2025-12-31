@@ -6,21 +6,21 @@ Use this sheet as a resume-ready progress tracker.
 
 | Metric | Target | Status | Evidence |
 | --- | --- | --- | --- |
-| Synthetic generator runs end-to-end | Yes | ☐ | `backend/generate_data.py` |
-| Quality labels + cleaned CSV | Yes | ☐ | `backend/label_quality.py` |
-| Leak detection alerts + reasons | Yes | ☐ | `backend/detect_leaks.py` |
-| Dashboard shows raw vs cleaned toggles | Yes | ☐ | UI mock + TODOs |
-| Asset & comms map documented | Yes | ☐ | README + UI page |
-| Incident report export available | Yes | ☐ | UI button + TODO |
+| Generator runs E2E | Yes | ✅ | [sample], [injections] |
+| Labels + cleaned CSV | Yes | ✅ | [labels], [cleaned] |
+| Leak alerts + reasons | Yes | ✅ | [alerts] |
+| Raw vs cleaned toggles | Yes | ✅ | [ui-app] |
+| Asset + comms map | Yes | ✅ | [asset-comms], [ui-app] |
+| Incident report export | Yes | ✅ | [report-py], [ui-app] |
 
 ## Quantitative Metrics (fill after running)
 
 | Metric | Definition | Target | Baseline | Latest |
 | --- | --- | --- | --- | --- |
-| False alarm rate | % alerts without injected leak | < 5% | TBD | TBD |
-| Detection delay | Minutes from leak start to alert | < 10 min | TBD | TBD |
-| Data quality coverage | % of injected issues labeled | > 90% | TBD | TBD |
-| Cleaning impact | % false alarms reduced after cleaning | > 30% | TBD | TBD |
+| False alarm rate | Alerts w/out leak (%) | < 5% | 85.7% | 85.7% |
+| Detection delay | Min from leak start | < 10 min | 0 min | 0 min |
+| Data quality coverage | Injected issues labeled (%) | > 90% | 100% | 100% |
+| Cleaning impact | False alarms reduced (%) | > 30% | -500.0% | -500.0% |
 
 ## Milestone Checklist
 
@@ -35,3 +35,19 @@ Use this sheet as a resume-ready progress tracker.
 
 - Keep evidence links to outputs or screenshots.
 - Update metrics after each iteration to show improvement.
+
+## Metric Evidence
+
+- False alarm rate: [alerts], [injections]
+- Detection delay: [alerts], [injections]
+- Data quality coverage: [labels], [injections]
+- Cleaning impact: [sample], [alerts]
+
+[sample]: ../data/sample.csv
+[injections]: ../data/injections.json
+[labels]: ../data/labels.json
+[cleaned]: ../data/cleaned.csv
+[alerts]: ../data/alerts.json
+[asset-comms]: ../data/asset_comms.json
+[ui-app]: ../ui/src/App.jsx
+[report-py]: ../backend/report.py
