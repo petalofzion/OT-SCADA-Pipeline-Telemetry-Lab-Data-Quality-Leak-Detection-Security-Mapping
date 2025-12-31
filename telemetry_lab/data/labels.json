@@ -1,8 +1,23 @@
 [
   {
+    "id": "LBL-01",
     "kind": "missing",
-    "start_index": 60,
-    "end_index": 69,
+    "start_index": 5,
+    "end_index": 6,
     "reason": "Missing telemetry value(s)"
+  },
+  {
+    "id": "LBL-02",
+    "kind": "flatline",
+    "start_index": 10,
+    "end_index": 16,
+    "reason": "Flatline detected in flow signal"
+  },
+  {
+    "id": "LBL-03",
+    "kind": "spike",
+    "start_index": 18,
+    "end_index": 20,
+    "reason": "Short spike during valve adjustment"
   }
 ]

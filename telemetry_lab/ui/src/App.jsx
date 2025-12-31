@@ -11,11 +11,6 @@ import {
   YAxis
 } from 'recharts';
 import { DataSet, Network } from 'vis-network/standalone/esm/vis-network';
-import telemetryCsv from './data/telemetry.csv?raw';
-import labelsData from './data/labels.json';
-import alertsData from './data/alerts.json';
-import commsModel from '../../data/asset_comms.json';
-import reportData from './data/report.json';
 
 const parseTelemetry = (csvText) => {
   const [headerLine, ...rows] = csvText.trim().split('\n');
@@ -35,46 +30,127 @@ const parseTelemetry = (csvText) => {
   });
 };
 
-const addCleanedTelemetry = (rows, windowSize = 5) =>
-  rows.map((row, index) => {
-    const start = Math.max(index - windowSize + 1, 0);
-    const slice = rows.slice(start, index + 1);
-    const average = (key) => {
-      const valid = slice.map((entry) => entry[key]).filter((value) => value !== null);
-      if (valid.length === 0) {
-        return null;
-      }
-      return valid.reduce((total, value) => total + value, 0) / valid.length;
-    };
+const addCleanedTelemetry = (rows, cleanedRows) => {
+  const cleanedByTimestamp = new Map(
+    cleanedRows.map((row) => [row.timestamp, row])
+  );
+  return rows.map((row) => {
+    const cleaned = cleanedByTimestamp.get(row.timestamp);
     return {
       ...row,
-      flowCleaned: average('flow'),
-      pressureCleaned: average('pressure'),
-      temperatureCleaned: average('temperature')
+      flowCleaned: cleaned?.flow ?? null,
+      pressureCleaned: cleaned?.pressure ?? null,
+      temperatureCleaned: cleaned?.temperature ?? null
     };
   });
+};
 
 const formatWindow = (start, end) =>
   `${start.slice(11, 16)} → ${end.slice(11, 16)}`;
+
+const loadTextResource = async (url, fallbackLoader) => {
+  try {
+    const response = await window.fetch(url);
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch {
+    // Fall through to fallback loader.
+  }
+
+  if (fallbackLoader) {
+    const fallbackModule = await fallbackLoader();
+    return fallbackModule.default ?? fallbackModule ?? '';
+  }
+
+  return '';
+};
+
+const loadJsonResource = async (url, fallbackLoader, defaultValue) => {
+  try {
+    const response = await window.fetch(url);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch {
+    // Fall through to fallback loader.
+  }
+
+  if (fallbackLoader) {
+    const fallbackModule = await fallbackLoader();
+    return fallbackModule.default ?? fallbackModule ?? defaultValue;
+  }
+
+  return defaultValue;
+};
 
 export default function App() {
   const [showRaw, setShowRaw] = useState(true);
   const [showCleaned, setShowCleaned] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
   const [showAlerts, setShowAlerts] = useState(true);
+  const [telemetry, setTelemetry] = useState([]);
+  const [labelsData, setLabelsData] = useState([]);
+  const [alertsData, setAlertsData] = useState([]);
+  const [commsModel, setCommsModel] = useState({
+    trustBoundaries: [],
+    assets: [],
+    communications: []
+  });
+  const [reportData, setReportData] = useState(null);
   const graphRef = useRef(null);
 
-  const telemetry = useMemo(
-    () => addCleanedTelemetry(parseTelemetry(telemetryCsv)),
-    []
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          sampleCsv,
+          cleanedCsv,
+          labelsPayload,
+          alertsPayload,
+          assetsPayload,
+          reportPayload
+        ] = await Promise.all([
+          loadTextResource('/data/sample', () =>
+            import('../../data/golden/quality_input.csv?raw')
+          ),
+          loadTextResource('/data/cleaned', () =>
+            import('../../data/golden/quality_input.csv?raw')
+          ),
+          loadJsonResource('/data/labels', () => import('../../data/labels.json'), []),
+          loadJsonResource('/data/alerts', () => import('../../data/alerts.json'), []),
+          loadJsonResource(
+            '/data/assets',
+            () => import('../../data/asset_comms.json'),
+            null
+          ),
+          loadJsonResource('/data/report', null, null)
+        ]);
+
+        const rawTelemetry = sampleCsv ? parseTelemetry(sampleCsv) : [];
+        const cleanedTelemetry = cleanedCsv ? parseTelemetry(cleanedCsv) : [];
+
+        setTelemetry(addCleanedTelemetry(rawTelemetry, cleanedTelemetry));
+        setLabelsData(Array.isArray(labelsPayload) ? labelsPayload : []);
+        setAlertsData(Array.isArray(alertsPayload) ? alertsPayload : []);
+        if (assetsPayload) {
+          setCommsModel(assetsPayload);
+        }
+        setReportData(reportPayload);
+      } catch (error) {
+        window.console.error('Failed to load telemetry data', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const trustBoundaryMap = useMemo(
     () =>
       new Map(
         commsModel.trustBoundaries.map((boundary) => [boundary.id, boundary])
       ),
-    []
+    [commsModel]
   );
 
   const accessLevelColors = useMemo(
@@ -127,7 +203,7 @@ export default function App() {
     }));
 
     return { nodes, edges };
-  }, [accessLevelColors, edgeAccessColors, trustBoundaryMap]);
+  }, [accessLevelColors, commsModel, edgeAccessColors, trustBoundaryMap]);
 
   useEffect(() => {
     if (!graphRef.current) {
@@ -180,7 +256,7 @@ export default function App() {
   const labelRanges = useMemo(
     () =>
       labelsData
-        .map((label) => {
+        .map((label, index) => {
           const start = telemetry[label.start_index]?.timestamp;
           const end = telemetry[label.end_index]?.timestamp;
           if (!start || !end) {
@@ -188,36 +264,45 @@ export default function App() {
           }
           return {
             ...label,
+            id: label.id ?? `label-${index + 1}`,
             start,
             end,
             window: formatWindow(start, end)
           };
         })
         .filter(Boolean),
-    [telemetry]
+    [labelsData, telemetry]
   );
 
   const alertRanges = useMemo(
     () =>
       alertsData
-        .map((alert) => {
+        .map((alert, index) => {
           const start = telemetry[alert.start_index]?.timestamp;
           const end = telemetry[alert.end_index]?.timestamp;
           if (!start || !end) {
             return null;
           }
+          const severity =
+            alert.severity ??
+            (alert.confidence >= 0.85 ? 'high' : alert.confidence >= 0.7 ? 'medium' : 'low');
           return {
             ...alert,
+            id: alert.id ?? `alert-${index + 1}`,
+            severity,
             start,
             end,
             window: formatWindow(start, end)
           };
         })
         .filter(Boolean),
-    [telemetry]
+    [alertsData, telemetry]
   );
 
   const handleReportExport = () => {
+    if (!reportData) {
+      return;
+    }
     const blob = new window.Blob([JSON.stringify(reportData, null, 2)], {
       type: 'application/json'
     });
@@ -390,7 +475,7 @@ export default function App() {
               ))}
             </tbody>
           </table>
-          <button type="button" onClick={handleReportExport}>
+          <button type="button" onClick={handleReportExport} disabled={!reportData}>
             Export incident report (JSON)
           </button>
         </div>
