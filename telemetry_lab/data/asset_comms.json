@@ -1,0 +1,134 @@
+{
+  "trustBoundaries": [
+    {
+      "id": "field",
+      "label": "Field Zone (Level 0/1)",
+      "description": "Directly attached sensors and actuators.",
+      "color": "#0ea5e9"
+    },
+    {
+      "id": "control",
+      "label": "Control Zone (Level 2/3)",
+      "description": "RTUs, HMIs, and control logic for operations.",
+      "color": "#22c55e"
+    },
+    {
+      "id": "dmz",
+      "label": "OT DMZ (Level 3.5)",
+      "description": "Buffer network for shared services and remote access.",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "enterprise",
+      "label": "Enterprise Zone (Level 4/5)",
+      "description": "Business analytics and corporate monitoring.",
+      "color": "#8b5cf6"
+    }
+  ],
+  "assets": [
+    {
+      "id": "sensor-01",
+      "name": "Flow Sensor",
+      "role": "Field device",
+      "accessLevel": "operator",
+      "trustBoundary": "field"
+    },
+    {
+      "id": "rtu-01",
+      "name": "RTU",
+      "role": "Edge control",
+      "accessLevel": "engineer",
+      "trustBoundary": "control"
+    },
+    {
+      "id": "hmi-01",
+      "name": "HMI",
+      "role": "Ops dashboard",
+      "accessLevel": "operator",
+      "trustBoundary": "control"
+    },
+    {
+      "id": "historian-01",
+      "name": "Historian",
+      "role": "Storage",
+      "accessLevel": "engineer",
+      "trustBoundary": "dmz"
+    },
+    {
+      "id": "scada-gw-01",
+      "name": "SCADA Gateway",
+      "role": "Remote access",
+      "accessLevel": "admin",
+      "trustBoundary": "dmz"
+    },
+    {
+      "id": "analytics-01",
+      "name": "Analytics Node",
+      "role": "Leak detection",
+      "accessLevel": "admin",
+      "trustBoundary": "enterprise"
+    }
+  ],
+  "communications": [
+    {
+      "id": "flow-to-rtu",
+      "source": "sensor-01",
+      "target": "rtu-01",
+      "protocol": "Modbus/TCP",
+      "direction": "telemetry",
+      "accessLevel": "telemetry",
+      "crossesBoundary": true,
+      "note": "Raw flow telemetry feeds edge control."
+    },
+    {
+      "id": "rtu-to-hmi",
+      "source": "rtu-01",
+      "target": "hmi-01",
+      "protocol": "OPC UA",
+      "direction": "control",
+      "accessLevel": "control",
+      "crossesBoundary": false,
+      "note": "Operator commands and setpoints."
+    },
+    {
+      "id": "rtu-to-historian",
+      "source": "rtu-01",
+      "target": "historian-01",
+      "protocol": "MQTT",
+      "direction": "telemetry",
+      "accessLevel": "telemetry",
+      "crossesBoundary": true,
+      "note": "Buffered telemetry to shared storage."
+    },
+    {
+      "id": "gateway-to-rtu",
+      "source": "scada-gw-01",
+      "target": "rtu-01",
+      "protocol": "VPN + SSH",
+      "direction": "remote-access",
+      "accessLevel": "admin",
+      "crossesBoundary": true,
+      "note": "Privileged maintenance tunnel."
+    },
+    {
+      "id": "historian-to-analytics",
+      "source": "historian-01",
+      "target": "analytics-01",
+      "protocol": "HTTPS",
+      "direction": "analytics",
+      "accessLevel": "telemetry",
+      "crossesBoundary": true,
+      "note": "Curated data for anomaly models."
+    },
+    {
+      "id": "analytics-to-hmi",
+      "source": "analytics-01",
+      "target": "hmi-01",
+      "protocol": "REST API",
+      "direction": "alerts",
+      "accessLevel": "control",
+      "crossesBoundary": true,
+      "note": "Leak alerts surface in operations."
+    }
+  ]
+}

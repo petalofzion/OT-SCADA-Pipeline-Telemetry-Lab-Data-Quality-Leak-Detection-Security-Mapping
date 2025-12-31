@@ -43,6 +43,19 @@ explainable OT/SCADA-style telemetry pipeline that can be shipped in one day.
 - Comms map (graph or diagram).
 - Access levels and practical protections.
 
+#### Comms Model + Mitigation Mapping
+
+The dashboard consumes `telemetry_lab/data/asset_comms.json`, which captures
+assets, trust boundaries, and communications (protocols + access levels). This
+structure maps directly to common OT/ICS mitigations:
+
+- **Trust boundaries** align with Purdue levels and inform network zoning,
+  firewalls, and data diodes between field, control, DMZ, and enterprise zones.
+- **Access levels** highlight least-privilege enforcement (operator vs engineer
+  vs admin) and point to MFA/jump-host controls for privileged access.
+- **Boundary-crossing comms** flag inspection and monitoring points for
+  intrusion detection, allow-listing, and secure remote access hardening.
+
 ### F. Documentation
 
 - 60-second setup.
@@ -79,6 +92,7 @@ explainable OT/SCADA-style telemetry pipeline that can be shipped in one day.
 - `sample.csv`: `timestamp, flow, pressure, temperature`
 - `labels.json`: `kind, start_index, end_index, reason`
 - `alerts.json`: `start_index, end_index, confidence, reason`
+- `asset_comms.json`: `trustBoundaries[]`, `assets[]`, `communications[]`
 
 ## Assumptions
 
