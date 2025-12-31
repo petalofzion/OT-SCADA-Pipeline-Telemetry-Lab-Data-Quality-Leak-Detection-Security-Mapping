@@ -48,6 +48,42 @@ const addCleanedTelemetry = (rows, cleanedRows) => {
 const formatWindow = (start, end) =>
   `${start.slice(11, 16)} → ${end.slice(11, 16)}`;
 
+const loadTextResource = async (url, fallbackLoader) => {
+  try {
+    const response = await window.fetch(url);
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch {
+    // Fall through to fallback loader.
+  }
+
+  if (fallbackLoader) {
+    const fallbackModule = await fallbackLoader();
+    return fallbackModule.default ?? fallbackModule ?? '';
+  }
+
+  return '';
+};
+
+const loadJsonResource = async (url, fallbackLoader, defaultValue) => {
+  try {
+    const response = await window.fetch(url);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch {
+    // Fall through to fallback loader.
+  }
+
+  if (fallbackLoader) {
+    const fallbackModule = await fallbackLoader();
+    return fallbackModule.default ?? fallbackModule ?? defaultValue;
+  }
+
+  return defaultValue;
+};
+
 export default function App() {
   const [showRaw, setShowRaw] = useState(true);
   const [showCleaned, setShowCleaned] = useState(true);
@@ -68,27 +104,28 @@ export default function App() {
     const fetchData = async () => {
       try {
         const [
-          sampleResponse,
-          cleanedResponse,
-          labelsResponse,
-          alertsResponse,
-          assetsResponse,
-          reportResponse
+          sampleCsv,
+          cleanedCsv,
+          labelsPayload,
+          alertsPayload,
+          assetsPayload,
+          reportPayload
         ] = await Promise.all([
-          window.fetch('/data/sample'),
-          window.fetch('/data/cleaned'),
-          window.fetch('/data/labels'),
-          window.fetch('/data/alerts'),
-          window.fetch('/data/assets'),
-          window.fetch('/data/report')
+          loadTextResource('/data/sample', () =>
+            import('../../data/golden/quality_input.csv?raw')
+          ),
+          loadTextResource('/data/cleaned', () =>
+            import('../../data/golden/quality_input.csv?raw')
+          ),
+          loadJsonResource('/data/labels', () => import('../../data/labels.json'), []),
+          loadJsonResource('/data/alerts', () => import('../../data/alerts.json'), []),
+          loadJsonResource(
+            '/data/assets',
+            () => import('../../data/asset_comms.json'),
+            null
+          ),
+          loadJsonResource('/data/report', null, null)
         ]);
-
-        const sampleCsv = sampleResponse.ok ? await sampleResponse.text() : '';
-        const cleanedCsv = cleanedResponse.ok ? await cleanedResponse.text() : '';
-        const labelsPayload = labelsResponse.ok ? await labelsResponse.json() : [];
-        const alertsPayload = alertsResponse.ok ? await alertsResponse.json() : [];
-        const assetsPayload = assetsResponse.ok ? await assetsResponse.json() : null;
-        const reportPayload = reportResponse.ok ? await reportResponse.json() : null;
 
         const rawTelemetry = sampleCsv ? parseTelemetry(sampleCsv) : [];
         const cleanedTelemetry = cleanedCsv ? parseTelemetry(cleanedCsv) : [];
