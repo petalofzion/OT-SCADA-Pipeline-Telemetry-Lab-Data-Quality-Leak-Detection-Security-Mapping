@@ -41,13 +41,17 @@ Follow these steps to maintain context and traceability.
 ### Task D — Operator Dashboard
 
 - File: `ui/src/App.jsx`
-- Replace placeholder chart with a real charting lib (e.g., uPlot, ECharts).
-- Wire buttons to export real incident JSON/CSV.
+- Current state: telemetry time-series rendered with Recharts + label/alert overlays.
+- Current state: incident report JSON export button wired.
+- Next: add CSV export for incident summaries and cleaned telemetry.
+- Next: add operator-facing filters (severity, label type, time window).
 
 ### Task E — Security Mapping
 
 - Files: `README.md`, `ui/src/App.jsx`
-- Add comms graph (e.g., Mermaid or lightweight SVG).
+- Current state: asset + comms map rendered with vis-network and trust boundaries.
+- Next: enrich assets with security metadata (protocol versions, auth status).
+- Next: add coverage mapping to MITRE ATT&CK for ICS techniques.
 
 ## 4) Guardrails
 
