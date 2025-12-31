@@ -4,6 +4,19 @@ from pathlib import Path
 
 import jsonschema
 
+from telemetry_lab.backend.report import build_report
+
+
+def _schema_dir() -> Path:
+    return Path(__file__).resolve().parents[1] / "schemas"
+
+
+def _load_report_schema() -> tuple[dict, jsonschema.RefResolver]:
+    schema_dir = _schema_dir()
+    report_schema = json.loads((schema_dir / "report.schema.json").read_text())
+    resolver = jsonschema.RefResolver(base_uri=f"{schema_dir.as_uri()}/", referrer=report_schema)
+    return report_schema, resolver
+
 
 def test_report_cli_output_matches_schema(tmp_path: Path) -> None:
     alerts_path = tmp_path / "alerts.json"
@@ -48,10 +61,21 @@ def test_report_cli_output_matches_schema(tmp_path: Path) -> None:
     assert report_path.exists()
     report = json.loads(report_path.read_text())
 
-    schema_dir = Path(__file__).resolve().parents[1] / "schemas"
-    report_schema = json.loads((schema_dir / "report.schema.json").read_text())
-    resolver = jsonschema.RefResolver(base_uri=f"{schema_dir.as_uri()}/", referrer=report_schema)
+    report_schema, resolver = _load_report_schema()
 
     jsonschema.validate(report, report_schema, resolver=resolver)
     assert report["summary"]["alert_count"] == 1
     assert report["summary"]["label_count"] == 1
+
+
+def test_generated_report_matches_schema_and_counts() -> None:
+    data_dir = Path(__file__).resolve().parents[1] / "data"
+    alerts = json.loads((data_dir / "alerts.json").read_text())
+    labels = json.loads((data_dir / "labels.json").read_text())
+
+    report = build_report(alerts, labels, generated_at="2024-01-01T00:00:00Z")
+    report_schema, resolver = _load_report_schema()
+
+    jsonschema.validate(report, report_schema, resolver=resolver)
+    assert report["summary"]["alert_count"] == len(alerts)
+    assert report["summary"]["label_count"] == len(labels)
