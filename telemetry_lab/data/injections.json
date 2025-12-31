@@ -1,0 +1,32 @@
+[
+  {
+    "kind": "missing",
+    "start_index": 60,
+    "end_index": 69,
+    "description": "10-minute missing telemetry window"
+  },
+  {
+    "kind": "flatline",
+    "start_index": 120,
+    "end_index": 134,
+    "description": "Flow sensor stuck (flatline)"
+  },
+  {
+    "kind": "spike",
+    "start_index": 180,
+    "end_index": 180,
+    "description": "Pressure spike outlier"
+  },
+  {
+    "kind": "drift",
+    "start_index": 220,
+    "end_index": 239,
+    "description": "Temperature sensor drift"
+  },
+  {
+    "kind": "small_leak",
+    "start_index": 260,
+    "end_index": 299,
+    "description": "Sustained drop in flow/pressure"
+  }
+]

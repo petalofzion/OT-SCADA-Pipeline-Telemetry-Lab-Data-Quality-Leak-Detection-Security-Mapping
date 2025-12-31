@@ -11,8 +11,8 @@ export default defineConfig({
       configureServer(server) {
         const dataDir = path.resolve(__dirname, '..', 'data');
         const dataFiles = {
-          sample: path.join('golden', 'quality_input.csv'),
-          cleaned: path.join('golden', 'quality_input.csv'),
+          sample: 'sample.csv',
+          cleaned: 'cleaned.csv',
           labels: 'labels.json',
           alerts: 'alerts.json',
           assets: 'asset_comms.json'
