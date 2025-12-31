@@ -16,6 +16,9 @@ python backend/detect_leaks.py
 python backend/report.py --ui-out ui/src/data/report.json
 ```
 
+For a full demo runbook (data generation → API → UI → report export), see
+`telemetry_lab/docs/DEMO_RUN.md`.
+
 Report artifacts:
 
 - `telemetry_lab/data/report.json` (incident report output)
