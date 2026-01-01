@@ -1,41 +1,119 @@
 {
-  "generated_at": "2024-01-01T01:00:00Z",
+  "generated_at": "2026-01-01T20:48:12.174509+00:00",
   "alerts": [
     {
-      "start_index": 22,
-      "end_index": 26,
-      "confidence": 0.82,
+      "start_index": 24,
+      "end_index": 30,
+      "confidence": 0.8500000000000001,
       "reason": "Sustained flow drop vs EWMA baseline"
     },
     {
-      "start_index": 28,
-      "end_index": 33,
+      "start_index": 48,
+      "end_index": 56,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 62,
+      "end_index": 69,
       "confidence": 0.9,
-      "reason": "Rapid pressure decay with temperature rise"
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 86,
+      "end_index": 94,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 110,
+      "end_index": 124,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 134,
+      "end_index": 141,
+      "confidence": 0.9,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 158,
+      "end_index": 166,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 182,
+      "end_index": 191,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 206,
+      "end_index": 215,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 230,
+      "end_index": 239,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 254,
+      "end_index": 264,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 278,
+      "end_index": 287,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 302,
+      "end_index": 310,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
+    },
+    {
+      "start_index": 326,
+      "end_index": 335,
+      "confidence": 0.95,
+      "reason": "Sustained flow drop vs EWMA baseline"
     }
   ],
   "labels": [
     {
       "kind": "missing",
-      "start_index": 5,
-      "end_index": 6,
+      "start_index": 60,
+      "end_index": 69,
       "reason": "Missing telemetry value(s)"
     },
     {
       "kind": "flatline",
-      "start_index": 10,
-      "end_index": 16,
-      "reason": "Flatline detected in flow signal"
+      "start_index": 120,
+      "end_index": 127,
+      "reason": "Flow sensor flatline"
     },
     {
       "kind": "spike",
-      "start_index": 18,
-      "end_index": 20,
-      "reason": "Short spike during valve adjustment"
+      "start_index": 180,
+      "end_index": 180,
+      "reason": "Pressure spike outlier"
+    },
+    {
+      "kind": "drift",
+      "start_index": 216,
+      "end_index": 227,
+      "reason": "Temperature drift detected"
     }
   ],
   "summary": {
-    "alert_count": 2,
-    "label_count": 3
+    "alert_count": 14,
+    "label_count": 4
   }
 }

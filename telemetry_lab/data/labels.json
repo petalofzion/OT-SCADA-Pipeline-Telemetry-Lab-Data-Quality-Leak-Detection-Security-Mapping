@@ -14,7 +14,7 @@
   {
     "kind": "spike",
     "start_index": 180,
-    "end_index": 181,
+    "end_index": 180,
     "reason": "Pressure spike outlier"
   },
   {

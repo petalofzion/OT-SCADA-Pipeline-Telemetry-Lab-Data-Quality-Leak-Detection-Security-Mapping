@@ -116,11 +116,12 @@ telemetry_lab/
 
 ## Evidence & Artifacts
 
-- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png`
-  (captured from live app)
-- **Incident Report**: `telemetry_lab/data/report.json` (JSON export)
-- **Cleaned Data**: `telemetry_lab/data/cleaned.csv`
-- **Leak Alerts**: `telemetry_lab/data/alerts.json`
+- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png` (captured 2026-01-01)
+- **Raw Telemetry Sample**: `telemetry_lab/data/sample.csv` (refreshed 2026-01-01)
+- **Cleaned Data**: `telemetry_lab/data/cleaned.csv` (refreshed 2026-01-01)
+- **Data Quality Labels**: `telemetry_lab/data/labels.json` (refreshed 2026-01-01)
+- **Leak Alerts**: `telemetry_lab/data/alerts.json` (refreshed 2026-01-01)
+- **Incident Report**: `telemetry_lab/data/report.json` (refreshed 2026-01-01)
 
 ## Golden datasets
 
