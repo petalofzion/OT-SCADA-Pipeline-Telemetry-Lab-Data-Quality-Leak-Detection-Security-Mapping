@@ -26,6 +26,20 @@ Report artifacts:
 - `telemetry_lab/ui/src/data/report.json` (UI export payload)
 - `telemetry_lab/ui/src/data/report.csv` (UI CSV export payload)
 
+### Offline UI snapshot
+
+The UI fallback loaders use the static snapshot in `telemetry_lab/data/`.
+Regenerate it after running the data pipeline:
+
+```bash
+cd telemetry_lab
+source .venv/bin/activate
+python backend/generate_data.py
+python backend/label_quality.py
+python backend/detect_leaks.py
+python backend/report.py --out data/report.json --csv-out data/report.csv
+```
+
 Optional UI:
 
 ```bash
@@ -102,7 +116,8 @@ telemetry_lab/
 
 ## Evidence & Artifacts
 
-- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png` (captured from live app)
+- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png`
+  (captured from live app)
 - **Incident Report**: `telemetry_lab/data/report.json` (JSON export)
 - **Cleaned Data**: `telemetry_lab/data/cleaned.csv`
 - **Leak Alerts**: `telemetry_lab/data/alerts.json`
@@ -141,7 +156,8 @@ make check
 ## Limitations
 
 - Detection logic is intentionally simple and threshold-based.
-- Recharts dashboards and the vis-network comms map are implemented, but CSV export is not wired up yet (JSON export works).
+- Recharts dashboards and the vis-network comms map are implemented, but CSV
+  export is not wired up yet (JSON export works).
 
 ## Next steps
 

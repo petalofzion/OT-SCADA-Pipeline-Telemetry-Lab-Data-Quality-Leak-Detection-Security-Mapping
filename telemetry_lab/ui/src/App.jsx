@@ -112,10 +112,10 @@ export default function App() {
           reportPayload
         ] = await Promise.all([
           loadTextResource('/data/sample', () =>
-            import('../../data/golden/quality_input.csv?raw')
+            import('../../data/sample.csv?raw')
           ),
           loadTextResource('/data/cleaned', () =>
-            import('../../data/golden/quality_input.csv?raw')
+            import('../../data/cleaned.csv?raw')
           ),
           loadJsonResource('/data/labels', () => import('../../data/labels.json'), []),
           loadJsonResource('/data/alerts', () => import('../../data/alerts.json'), []),
@@ -124,7 +124,7 @@ export default function App() {
             () => import('../../data/asset_comms.json'),
             null
           ),
-          loadJsonResource('/data/report', null, null)
+          loadJsonResource('/data/report', () => import('../../data/report.json'), null)
         ]);
 
         const rawTelemetry = sampleCsv ? parseTelemetry(sampleCsv) : [];
