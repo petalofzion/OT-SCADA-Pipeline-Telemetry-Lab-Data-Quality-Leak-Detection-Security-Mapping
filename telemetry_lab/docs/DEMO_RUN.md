@@ -17,7 +17,7 @@ python backend/label_quality.py
 python backend/detect_leaks.py
 ```
 
-**Expected output files**
+### Report output files
 
 - `telemetry_lab/data/sample.csv` (raw telemetry sample)
 - `telemetry_lab/data/cleaned.csv` (cleaned telemetry for analysis)
@@ -38,7 +38,7 @@ You should see:
 Serving telemetry API on http://localhost:8000
 ```
 
-**Useful endpoints**
+### Useful endpoints
 
 - `http://localhost:8000/health`
 - `http://localhost:8000/data/sample`
@@ -74,7 +74,7 @@ python backend/report.py \
   --ui-csv-out ui/src/data/report.csv
 ```
 
-**Expected output files**
+### Expected output files
 
 - `telemetry_lab/data/report.json` (incident report)
 - `telemetry_lab/data/report.csv` (incident report CSV export)
