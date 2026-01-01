@@ -79,7 +79,7 @@ def label_quality(rows: list[dict[str, str]]) -> list[QualityLabel]:
             )
             break
 
-    # Spike detection (single point)
+    # Spike detection (single point range for UI visibility)
     for idx in range(1, len(rows) - 1):
         if (
             _row_has_missing(rows[idx - 1])
@@ -95,7 +95,7 @@ def label_quality(rows: list[dict[str, str]]) -> list[QualityLabel]:
                 QualityLabel(
                     kind="spike",
                     start_index=idx,
-                    end_index=idx,
+                    end_index=idx + 1,
                     reason="Pressure spike outlier",
                 )
             )

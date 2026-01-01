@@ -116,7 +116,8 @@ telemetry_lab/
 
 ## Evidence & Artifacts
 
-- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png` (captured 2026-01-01)
+- **Dashboard Screenshot**: `telemetry_lab/docs/telemetry-dashboard.png` (captured
+  2026-01-01)
 - **Raw Telemetry Sample**: `telemetry_lab/data/sample.csv` (refreshed 2026-01-01)
 - **Cleaned Data**: `telemetry_lab/data/cleaned.csv` (refreshed 2026-01-01)
 - **Data Quality Labels**: `telemetry_lab/data/labels.json` (refreshed 2026-01-01)
