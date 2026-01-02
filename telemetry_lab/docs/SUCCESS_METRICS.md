@@ -20,15 +20,15 @@ Use this sheet as a resume-ready progress tracker.
 | False alarm rate | Alerts w/out leak (%) | < 5% | 85.7% | 85.7% |
 | Detection delay | Min from leak start | < 10 min | 0 min | 0 min |
 | Data quality coverage | Injected issues labeled (%) | > 90% | 100% | 100% |
-| Cleaning impact | False alarms reduced (%) | > 30% | -500.0% | -500.0% |
+| Cleaning impact | False alarms reduced (%) | > 30% | -500.0% | 0.0% |
 
 ## Milestone Checklist
 
-- [ ] M1: Data generation + injection metadata
-- [ ] M2: Quality labeling + cleaned output
-- [ ] M3: Leak detection baseline
-- [ ] M4: UI wiring to real data
-- [ ] M5: Asset/comms map visualization
+- [x] M1: Data generation + injection metadata
+- [x] M2: Quality labeling + cleaned output
+- [x] M3: Leak detection baseline
+- [x] M4: UI wiring to real data
+- [x] M5: Asset/comms map visualization
 - [ ] M6: Resume-ready screenshots + report
 
 ## Notes
