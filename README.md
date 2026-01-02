@@ -123,6 +123,11 @@ telemetry_lab/
 - **Data Quality Labels**: `telemetry_lab/data/labels.json` (refreshed 2026-01-01)
 - **Leak Alerts**: `telemetry_lab/data/alerts.json` (refreshed 2026-01-01)
 - **Incident Report**: `telemetry_lab/data/report.json` (refreshed 2026-01-01)
+- **Incident Report (CSV)**: `telemetry_lab/data/report.csv` (refreshed 2026-01-01)
+- **UI Report Data (JSON)**: `telemetry_lab/ui/src/data/report.json` (refreshed
+  2026-01-01)
+- **UI Report Data (CSV)**: `telemetry_lab/ui/src/data/report.csv` (refreshed
+  2026-01-01)
 
 ## Golden datasets
 
