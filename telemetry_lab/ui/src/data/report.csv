@@ -1,0 +1,19 @@
+record_type,generated_at,kind,start_index,end_index,confidence,reason
+alert,2026-01-02T03:27:19.815267+00:00,,24,30,0.8500000000000001,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,48,56,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,62,69,0.9,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,86,94,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,110,124,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,134,141,0.9,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,158,166,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,182,191,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,206,215,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,230,239,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,254,264,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,278,287,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,302,310,0.95,Sustained flow drop vs EWMA baseline
+alert,2026-01-02T03:27:19.815267+00:00,,326,335,0.95,Sustained flow drop vs EWMA baseline
+label,2026-01-02T03:27:19.815267+00:00,missing,60,69,,Missing telemetry value(s)
+label,2026-01-02T03:27:19.815267+00:00,flatline,120,127,,Flow sensor flatline
+label,2026-01-02T03:27:19.815267+00:00,spike,180,181,,Pressure spike outlier
+label,2026-01-02T03:27:19.815267+00:00,drift,216,227,,Temperature drift detected
